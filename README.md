@@ -12,7 +12,9 @@ implementation that targets Cb.
 As you may have realized, Cb is distinguished more by the features it doesn't
 provide than the ones it does.
 
-= Built-in Types =
+Built-in Types
+==============
+
 * int8, uint8, int16, uint16, int32, uint32, int64, unit64, intptr 
 * _type_* where _type_ is a builtin or user-defined type.
 * _type_[] where _type_ is a builtin or user-defined type. 
