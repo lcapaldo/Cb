@@ -15,6 +15,6 @@ provide than the ones it does.
 Built-in Types
 ==============
 
-* int8, uint8, int16, uint16, int32, uint32, int64, unit64, intptr 
+* int8, uint8, int16, uint16, int32, uint32, int64, uint64, intptr 
 * _type_* where _type_ is a builtin or user-defined type.
 * _type_[] where _type_ is a builtin or user-defined type. 
