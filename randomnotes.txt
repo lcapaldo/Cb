@@ -1,0 +1,68 @@
+Threads
+
+Like
+What should I do about threads in Cb
+and do they force me to support some kind of dynamic typing
+:(
+But it's fun!
+Ok
+So
+sub typing in Cb today:
+because I didn't write this up on github yet
+you can have a struct A { ... }
+struct A can have a field called a discriminant
+you tell teh runtime about this field
+syntax not yet determined
+but something like
+struct A { discriminant int subtype_of_a; };
+you can then have
+global constant (again made up syntax) int subtype_for_b = 1;
+and
+struct B : A (subtype_of_a=subtype_for_b) { int b_value: };
+A* anB = new B; is now legal
+you can do the same thing but with a pointer as well
+so
+the the discriminant could be a pointer to a vtable
+general idea being you collaborate with the runtime in such a way that you get pretty significant control over your in memory representation of things and without additional overhead
+and in the case of something like the pointer to vtable you don't have any "waste" just like your typical C++ implementation doesn't have
+anyway
+all this is to say
+there's subtyping, leveraging a pretty weaksauce form of dependent typing
+but
+s/but//
+with predicatable, low representational overhead
+The GC is going to use the discriminant to map pointers that may be pointers to subtypes to the actual types they are, and thus be able to chase pointers
+(and be precise)
+so this is great
+except it means I can't have a void*
+because it woudl break memory safety and the gc would ahve to start guessing
+and I also don't have templates or generics
+(because that can be built into the code gen of the higher level language targetting this one)
+But it does present a problem for a CreateThread type function
+or really any language supplied function that takes a callback
+namely, how do I give your callback a context parameter
+again in the HLL language I can have a root to my type hierarchy
+but if CreateThread is part of teh RTL for Cb I can't assume that
+So one way to solve it
+is support dynamic typing in the language
+CreateThread( int(dynamic), dynamic context)
+And that does some extra heap allocations and the GC and the runtime know about dynamic
+and that carries around a pointer to the layout of the actual thing
+This might be the _only_ way
+without breaking my other rules
+but I'm not sure
+there's also the
+"CreateThread (and only CreateThread) is "magic" and uses whatever type for the context the function pointer you give it takes as its argument"
+finally I can just make "CreateThread" sorts of scenario exposed via the "FFI"
+but that
+means I need to have an FFI
+granted i'll need one
+of some variety
+but threading primitives in the runtime as opposed to user provided let me do other things
+or at least
+if the runtime is thread aware it can cooperate with the "user runtime" in more interesting ways
+and I can also just say "no threads"
+but I'
+m considered I will screw up and make decisions that will make them harder to add later
+and I think it'll be easier to tack on an FFI than threading
+and an FFI sort of implies threading ebcause I can call into pthreads or wahtever
