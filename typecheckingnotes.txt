@@ -1,0 +1,2 @@
+This might help to figure outhow to type check vtables
+http://research.microsoft.com/pubs/80117/tr.pdf
